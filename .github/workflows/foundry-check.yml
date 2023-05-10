@@ -25,6 +25,8 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
 
       - name: Build and diff
         id: diff
