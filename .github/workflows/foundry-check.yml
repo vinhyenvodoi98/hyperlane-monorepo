@@ -3,7 +3,7 @@ name: Foundry diff check
 on:
   pull_request:
     paths:
-     - 'solidity/**'
+      - 'solidity/**'
 
 env:
   FOUNDRY_PROFILE: ci
