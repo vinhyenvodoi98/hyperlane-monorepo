@@ -30,12 +30,13 @@ jobs:
         id: diff
         run: |
           cd solidity
-          git checkout master
+          git checkout main
           forge snapshot --snap ${{ github.sha }}
           git checkout ${{ github.head_ref }}
           result="$(forge snapshot --diff ${{ github.sha }})"
           echo $result
           result="${result//$'\033[32m'/' '}"
+          result="${result//$'\033[31m'/' '}"
           result="${result//$'\033[0m'/' '}"
           echo "result<<EOF" >> $GITHUB_OUTPUT
           echo "$result" >> $GITHUB_OUTPUT
