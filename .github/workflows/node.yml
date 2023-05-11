@@ -249,18 +249,10 @@ jobs:
         run: |
           cd solidity
           git checkout main
-          forge snapshot --snap ${{ github.sha }}
+          forge snapshot --snap main
           git checkout ${{ github.head_ref }}
-          result="$(forge snapshot --diff ${{ github.sha }})"
-          echo $result
-          result="${result//$'\033[31m'/' '}"
-          result="${result//$'\033[32m'/' '}"
-          result="${result//$'\033[33m'/' '}"
-          result="${result//$'\033[1;33m'/' '}"
-          result="${result//$'\033[34m'/' '}"
-          result="${result//$'\033[1;36m'/' '}"
-          result="${result//$'\033[1;37m'/' '}"
-          result="${result//$'\033[0m'/' '}"
+          forge snapshot --snap head
+          result="$(diff -u main head)" || if [ $? = 2 ]; then exit 1; fi
           echo "result<<EOF" >> $GITHUB_OUTPUT
           echo "$result" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -270,7 +262,7 @@ jobs:
         with:
           header: Diff
           message: |
-            ### Difference between build result of base branch and PR
-            ```
+            ### Change
+            ```diff
             ${{ steps.diff.outputs.result }}
             ```
